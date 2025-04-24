@@ -2,45 +2,71 @@
 
 import { useState } from 'react';
 
-const stores = ['Trader Joe\'s', 'Whole Foods', 'Walmart', 'Costco', 'Safeway'];
+const stores = ['Trader Joe\'s', 'Whole Foods', 'Walmart', 'Costco', 'Smith\'s'];
+const mealOptions = ['breakfast', 'lunch', 'dinner'] as const;
+type MealType = typeof mealOptions[number];
+
+const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 
 export default function PreferencesPage() {
     const [goal, setGoal] = useState('maintain');
     const [calories, setCalories] = useState(2200);
     const [budget, setBudget] = useState(50);
     const [storePrefs, setStorePrefs] = useState<string[]>([]);
+    const [mealPlan, setMealPlan] = useState({
+        breakfast: { count: 0, servings: 1 },
+        lunch: { count: 5, servings: 1 },
+        dinner: { count: 5, servings: 1 },
+    });
+    const [uniquePerDay, setUniquePerDay] = useState(true);
+    const [selectedDays, setSelectedDays] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
 
-    const toggleStore = (store: string) => {
-        setStorePrefs((prev) => prev.includes(store) ? prev.filter(s => s !== store) : [...prev, store]);
+    const [mealCounts, setMealCounts] = useState({
+        breakfast: 0,
+        lunch: 5,
+        dinner: 5,
+    });
+
+    const toggle = (value: string, array: string[], setArray: (val: string[]) => void) => {
+        setArray(array.includes(value) ? array.filter((v) => v !== value) : [...array, value]);
     };
 
+    const handleMealChange = (meal: keyof typeof mealPlan, field: 'count' | 'servings', value: number) => {
+        setMealPlan((prev) => ({
+            ...prev,
+            [meal]: {
+                ...prev[meal],
+                [field]: value,
+            },
+        }));
+    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
             goal,
             calories,
             budget,
-            stores: storePrefs
+            stores: storePrefs,
+            selectedDays,
+            mealPlan,
         };
 
-        console.log('Form submitted:', data);
+
         try {
             const res = await fetch('/api/generate-meals', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
             });
-        
+
             const result = await res.json();
             console.log('Generated meal plan:', result.mealPlan);
-        
-            // For now, just show the result in an alert or log
-            alert(result.mealPlan); // Optional: Temporary visual feedback
-        
+
             // TODO: Route to dashboard and pass result
-          } catch (err) {
+        } catch (err) {
             console.error('Failed to generate meal plan:', err);
-          }
+        }
     };
     return (
         <main className="min-h-screen flex justify-center px-4">
@@ -90,7 +116,7 @@ export default function PreferencesPage() {
                                 <button
                                     type="button"
                                     key={store}
-                                    onClick={() => toggleStore(store)}
+                                    onClick={() => toggle(store, storePrefs, setStorePrefs)}
                                     className={`px-4 py-2 rounded-full border-2 transition-all font-medium
                   ${storePrefs.includes(store)
                                             ? 'bg-green-600 text-white border-green-700 shadow-sm'
@@ -103,6 +129,39 @@ export default function PreferencesPage() {
                             ))}
                         </div>
                     </div>
+
+                    {/* Days */}
+                    <div>
+                        <label className="block font-semibold mb-2 text-white">Meals & Servings Per Week</label>
+                        <div className="grid grid-cols-3 gap-4">
+                            {mealOptions.map((meal) => (
+                                <div key={meal} className="space-y-2">
+                                    <div className="text-white font-medium capitalize">{meal}</div>
+                                    <div className="text-sm text-gray-400"># of meals</div>
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        max={21}
+                                        value={mealPlan[meal].count}
+                                        onChange={(e) => handleMealChange(meal, 'count', Number(e.target.value))}
+                                        className="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-white"
+                                    />
+                                    <div className="text-sm text-gray-400">Servings per meal</div>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        max={10}
+                                        value={mealPlan[meal].servings}
+                                        onChange={(e) => handleMealChange(meal, 'servings', Number(e.target.value))}
+                                        className="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-white"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+
+
 
                     <button
                         type="submit"
