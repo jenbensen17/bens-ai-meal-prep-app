@@ -27,7 +27,7 @@ export default function PreferencesPage() {
         // Here you would typically send the data to your backend or API
     };
     return (
-        <main className="min-h-screen flex items-center justify-center bg-black px-4">
+        <main className="min-h-screen flex justify-center px-4">
             <div className="w-full max-w-xl space-y-8">
                 <h1 className="text-3xl font-bold text-center">Create Your Meal Plan</h1>
 
