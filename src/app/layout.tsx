@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Ben's AI Meal Planner App
             </Link>
             <div className="flex gap-6 text-gray-300 font-medium">
-              <Link href="/plan" className="hover:text-blue-400 transition">Plan</Link>
+              <Link href="/preferences" className="hover:text-blue-400 transition">Generate New Plan</Link>
               <Link href="/dashboard" className="hover:text-blue-400 transition">Dashboard</Link>
             </div>
           </nav>

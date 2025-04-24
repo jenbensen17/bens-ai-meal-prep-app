@@ -24,7 +24,23 @@ export default function PreferencesPage() {
         };
 
         console.log('Form submitted:', data);
-        // Here you would typically send the data to your backend or API
+        try {
+            const res = await fetch('/api/generate-meals', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+        
+            const result = await res.json();
+            console.log('Generated meal plan:', result.mealPlan);
+        
+            // For now, just show the result in an alert or log
+            alert(result.mealPlan); // Optional: Temporary visual feedback
+        
+            // TODO: Route to dashboard and pass result
+          } catch (err) {
+            console.error('Failed to generate meal plan:', err);
+          }
     };
     return (
         <main className="min-h-screen flex justify-center px-4">
