@@ -18,7 +18,8 @@ export async function POST(req: Request) {
   - Breakfast: ${mealPlan.breakfast.count} meals, ${mealPlan.breakfast.servings} servings each
   - Lunch: ${mealPlan.lunch.count} meals, ${mealPlan.lunch.servings} servings each
   - Dinner: ${mealPlan.dinner.count} meals, ${mealPlan.dinner.servings} servings each
-If it is not possible to meet the budget with the given meal plan, simply return "NOT POSSIBLE". DO NOT CONTINUE GENERATING.
+
+Use only ingredients from the preferred stores. Use brands only available at the preferred stores.
 Clearly format the output by meal and day. Each meal should include ingredients and prep instructions.
 
     `;
