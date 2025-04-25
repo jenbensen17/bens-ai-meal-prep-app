@@ -114,7 +114,7 @@ export default function PreferencesPage() {
                             className="w-full border rounded p-2"
                         />
                     </div>
-
+                    {/* Preferred Stores */}
                     <div>
                         <label className="block font-semibold mb-2">Preferred Stores</label>
                         <div className="flex flex-wrap gap-2">
@@ -135,6 +135,28 @@ export default function PreferencesPage() {
                             ))}
                         </div>
                     </div>
+
+
+                    <div>
+                        <label className="block font-semibold mb-2">Select Days to Plan</label>
+                        <div className="flex flex-wrap gap-2">
+                            {daysOfWeek.map((day) => (
+                                <button
+                                    type="button"
+                                    key={day}
+                                    onClick={() => toggle(day, selectedDays, setSelectedDays)}
+                                    className={`px-4 py-2 rounded-full border-2 transition-all font-medium
+                                    ${selectedDays.includes(day)
+                                            ? 'bg-blue-600 text-white border-blue-700 shadow-sm'
+                                            : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'}
+                                    `}
+                                >
+                                    {day}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
 
                     {/* Days */}
                     <div>
@@ -169,8 +191,8 @@ export default function PreferencesPage() {
                         type="submit"
                         disabled={loading}
                         className={`w-full py-3 rounded-xl text-lg font-semibold transition-all shadow-md ${loading
-                                ? 'bg-blue-800 cursor-not-allowed text-gray-300'
-                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            ? 'bg-blue-800 cursor-not-allowed text-gray-300'
+                            : 'bg-blue-600 hover:bg-blue-700 text-white'
                             }`}
                     >
                         {loading ? '🍳 Generating Meal Plan...' : '🍽️ Generate Meal Plan'}
