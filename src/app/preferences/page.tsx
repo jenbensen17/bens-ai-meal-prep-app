@@ -62,6 +62,8 @@ export default function PreferencesPage() {
 
             const result = await res.json();
             console.log('Generated meal plan:', result.mealPlan);
+            localStorage.setItem('mealPlan', result.mealPlan);
+            window.location.href = '/dashboard';
 
             // TODO: Route to dashboard and pass result
         } catch (err) {
