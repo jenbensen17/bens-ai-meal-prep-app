@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const stores = ['Trader Joe\'s', 'Whole Foods', 'Walmart', 'Costco', 'Smith\'s'];
 const mealOptions = ['breakfast', 'lunch', 'dinner'] as const;
-type MealType = typeof mealOptions[number];
+
 
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -19,14 +19,10 @@ export default function PreferencesPage() {
         lunch: { count: 5, servings: 1 },
         dinner: { count: 5, servings: 1 },
     });
-    const [uniquePerDay, setUniquePerDay] = useState(true);
+
     const [selectedDays, setSelectedDays] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
     const [loading, setLoading] = useState(false);
-    const [mealCounts, setMealCounts] = useState({
-        breakfast: 0,
-        lunch: 5,
-        dinner: 5,
-    });
+
 
     const toggle = (value: string, array: string[], setArray: (val: string[]) => void) => {
         setArray(array.includes(value) ? array.filter((v) => v !== value) : [...array, value]);

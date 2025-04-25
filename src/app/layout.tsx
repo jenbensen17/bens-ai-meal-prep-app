@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-gray-800">
           <nav className="max-w-5xl mx-auto flex justify-between items-center py-4 px-6">
             <Link href="/" className="text-2xl font-bold text-blue-400">
-              Ben's AI Meal Planner App
+              Ben&apos;s AI Meal Planner App
             </Link>
             <div className="flex gap-6 text-gray-300 font-medium">
               <Link href="/preferences" className="hover:text-blue-400 transition">Plan Preferences</Link>
