@@ -21,7 +21,7 @@ export default function PreferencesPage() {
     });
     const [uniquePerDay, setUniquePerDay] = useState(true);
     const [selectedDays, setSelectedDays] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
-
+    const [loading, setLoading] = useState(false);
     const [mealCounts, setMealCounts] = useState({
         breakfast: 0,
         lunch: 5,
@@ -43,6 +43,8 @@ export default function PreferencesPage() {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+
         const data = {
             goal,
             calories,
@@ -52,7 +54,6 @@ export default function PreferencesPage() {
             mealPlan,
         };
 
-
         try {
             const res = await fetch('/api/generate-meals', {
                 method: 'POST',
@@ -61,15 +62,16 @@ export default function PreferencesPage() {
             });
 
             const result = await res.json();
-            console.log('Generated meal plan:', result.mealPlan);
             localStorage.setItem('mealPlan', result.mealPlan);
             window.location.href = '/dashboard';
-
-            // TODO: Route to dashboard and pass result
         } catch (err) {
-            console.error('Failed to generate meal plan:', err);
+            console.error('Error generating meal plan:', err);
+            alert('Something went wrong. Try again.');
+        } finally {
+            setLoading(false);
         }
     };
+
     return (
         <main className="min-h-screen flex justify-center px-4">
             <div className="w-full max-w-xl space-y-8">
@@ -167,10 +169,15 @@ export default function PreferencesPage() {
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
+                        disabled={loading}
+                        className={`w-full py-3 rounded-xl text-lg font-semibold transition-all shadow-md ${loading
+                                ? 'bg-blue-800 cursor-not-allowed text-gray-300'
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            }`}
                     >
-                        🍽️ Generate Meal Plan
+                        {loading ? '🍳 Generating Meal Plan...' : '🍽️ Generate Meal Plan'}
                     </button>
+
                 </form>
             </div>
         </main>
