@@ -163,10 +163,6 @@ export default function PreferencesPage() {
                             ))}
                         </div>
                     </div>
-
-
-
-
                     <button
                         type="submit"
                         disabled={loading}
