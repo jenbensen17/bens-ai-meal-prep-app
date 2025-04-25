@@ -62,7 +62,8 @@ Return ONLY valid JSON formatted exactly like this:
   ],
   ...
 },
-"totalEstimatedPrice": {"$50.00"},
+"totalEstimatedPrice": "$50.00",
+
 
 
 }
