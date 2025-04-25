@@ -72,24 +72,26 @@ ENSURE ALL PRODUCE ITEMS ARE AVAILABLE AT THE STORES LISTED. IF POSSIBLE, THE BR
     
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
-
-    const cleanedText = text
-    .replace(/^```json\n/, '') // remove starting ```json
-    .replace(/^```\n/, '')     // just in case no "json" tag
-    .replace(/\n```$/, '')     // remove ending ```
-    .trim();                   // clean up spaces
-
-  let mealPlanReturn;
-  try {
-    mealPlanReturn = JSON.parse(cleanedText);
-  } catch (error) {
-    console.error('Failed to parse Gemini response:', error);
-    return NextResponse.json({ error: 'Invalid JSON from Gemini' }, { status: 500 });
-  }
-
-  return NextResponse.json(mealPlanReturn, { status: 200 });
+    try {
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = await response.text();
+      
+        console.log('Gemini raw response:', text);
+      
+        const cleanedText = text
+          .replace(/^```json\n/, '')
+          .replace(/^```\n/, '')
+          .replace(/\n```$/, '')
+          .trim();
+      
+        const mealPlanReturn = JSON.parse(cleanedText);
+        
+        return NextResponse.json(mealPlanReturn, { status: 200 });
+      
+      } catch (error) {
+        console.error('Error generating or parsing meal plan:', error);
+        return NextResponse.json({ error: 'Failed to generate meal plan' }, { status: 500 });
+      }
 
 }
