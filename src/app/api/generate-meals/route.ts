@@ -61,11 +61,12 @@ Return ONLY valid JSON formatted exactly like this:
     }
   ],
   ...
-}
+},
+"totalEstimatedPrice": {"$50.00"},
 
 
 }
-ONLY output pure JSON with no extra text.
+Return ONLY pure valid JSON. Do NOT include triple backticks or markdown formatting. No extra text or comments.
 ENSURE ALL PRODUCE ITEMS ARE AVAILABLE AT THE STORES LISTED. IF POSSIBLE, THE BRAND SHOULD BE SPECIFIED.
 `;
     
@@ -75,5 +76,20 @@ ENSURE ALL PRODUCE ITEMS ARE AVAILABLE AT THE STORES LISTED. IF POSSIBLE, THE BR
     const response = await result.response;
     const text = response.text();
 
-    return NextResponse.json({ mealPlan: text });
+    const cleanedText = text
+    .replace(/^```json\n/, '') // remove starting ```json
+    .replace(/^```\n/, '')     // just in case no "json" tag
+    .replace(/\n```$/, '')     // remove ending ```
+    .trim();                   // clean up spaces
+
+  let mealPlanReturn;
+  try {
+    mealPlanReturn = JSON.parse(cleanedText);
+  } catch (error) {
+    console.error('Failed to parse Gemini response:', error);
+    return NextResponse.json({ error: 'Invalid JSON from Gemini' }, { status: 500 });
+  }
+
+  return NextResponse.json(mealPlanReturn, { status: 200 });
+
 }

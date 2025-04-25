@@ -62,7 +62,9 @@ export default function PreferencesPage() {
             });
 
             const result = await res.json();
-            localStorage.setItem('mealPlan', result.mealPlan);
+            console.log('Meal Plan:', result);
+            localStorage.setItem('mealPlan', JSON.stringify(result));
+
             window.location.href = '/dashboard';
         } catch (err) {
             console.error('Error generating meal plan:', err);
