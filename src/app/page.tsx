@@ -12,7 +12,7 @@ export default function Home() {
         Get personalized weekly meal plans powered by AI — tailored to your fitness goals, schedule, and preferences.
       </p>
       <button
-        onClick={() => router.push('/dashboard')}
+        onClick={() => router.push('/preferences')}
         className="px-6 py-3 bg-black text-white rounded-2xl text-lg font-semibold shadow-md hover:bg-gray-900 transition-all"
       >
         Generate My Meal Plan

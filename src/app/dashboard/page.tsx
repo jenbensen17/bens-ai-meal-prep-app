@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface MealPlan {
@@ -48,9 +49,7 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold text-blue-400 mb-4">No Meal Plan Found</h1>
         <p className="text-gray-400">
           Please create a meal plan on the{' '}
-          <a href="/plan" className="text-blue-500 underline">
-            Plan
-          </a>{' '}
+          <Link href="/preferences" className="underline hover:text-blue-400 transition">Plan Preferences</Link>{' '}
           page first.
         </p>
       </main>
