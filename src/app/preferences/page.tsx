@@ -12,12 +12,12 @@ const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 export default function PreferencesPage() {
     const [goal, setGoal] = useState('maintain');
     const [calories, setCalories] = useState(2200);
-    const [budget, setBudget] = useState(50);
+    const [budget, setBudget] = useState(75);
     const [storePrefs, setStorePrefs] = useState<string[]>([]);
     const [mealPlan, setMealPlan] = useState({
         breakfast: { count: 0, servings: 1 },
-        lunch: { count: 5, servings: 1 },
-        dinner: { count: 5, servings: 1 },
+        lunch: { count: 1, servings: 5 },
+        dinner: { count: 1, servings: 5 },
     });
 
     const [selectedDays, setSelectedDays] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
